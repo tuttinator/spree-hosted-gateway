@@ -152,7 +152,17 @@ class ExternalGateway < PaymentMethod
   
   def get_language
   	return self.preferences["language"]
+  end
+  
+  def get_validUntil
+  	t = Time.now + 2.hours
+  	validuntil = t.strftime("%Y-%m-%d %H:%M:%S.%Z") 
+  	return validuntil
   end  
+  
+  def get_paymentType
+ 	return self.preferences["paymentType"]
+  end
   
 
 end
