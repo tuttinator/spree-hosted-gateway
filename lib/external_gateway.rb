@@ -1,5 +1,8 @@
 class ExternalGateway < PaymentMethod
 
+  require 'digest/sha1'
+  require 'date'
+    
   #We need access to routes to correctly assemble a return url
  include ActionController::UrlWriter
 
@@ -17,6 +20,23 @@ class ExternalGateway < PaymentMethod
 
   preference :status_param_key, :string, :default => 'status'
   preference :successful_transaction_value, :string, :default => 'success'
+  
+    # Rabobank iDEAL Lite - specific methods added by: Arjan Landman
+  
+  #hardcoded
+  preference :language, :string, :default => "nl"
+  preference :subID, :string, :default => "0"
+  preference :currency, :string, :default => "EUR"
+  preference :paymentType, :string, :default => "ideal"
+  preference :hash, :string, :default => "SHA-1"
+  
+  # from admin => DB
+  preference :merchantID, :string, :default => "002031546"
+  preference :description, :string, :default => "Evans & Watson"
+ # preference :urlSuccess, :string, :default => "http://127.0.0.1/checkout/confirm/"
+ # preference :urlCancel, :string, :default => "http://127.0.0.1/checkout/payment/"
+ # preference :urlError, :string, :default => "http://127.0.0.1/checkout/payment/error"
+  preference :secret, :string, :default => "eju2c5CoRHZlHoTc"
 
   #An array of preferences that should not be automatically inserted into the form
   INTERNAL_PREFERENCES = [:server, :status_param_key, :successful_transaction_value, :custom_data]
@@ -100,6 +120,17 @@ class ExternalGateway < PaymentMethod
   def additional_attributes
     self.preferences.select { |key| !INTERNAL_PREFERENCES.include?(key[0].to_sym) }
   end
+  
+  
+  #added generating method
+  def get_ideal(order)
+  	get_hash(order)
+  end
+  
+  def get_merchantID
+  	return self.preferences["merchantID"]
+  end
+  
 
 end
 
