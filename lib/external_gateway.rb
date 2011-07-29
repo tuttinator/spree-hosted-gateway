@@ -177,7 +177,7 @@ class ExternalGateway < PaymentMethod
 		end
 
 		
-		return products.to_s() + "\n"	
+		return products	
   end   
   
   def get_paymentType
