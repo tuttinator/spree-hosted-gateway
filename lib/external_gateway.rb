@@ -160,27 +160,7 @@ class ExternalGateway < PaymentMethod
   	return validuntil
   end 
   
-  def add_shipping(order)
-	ship_cost = order.ship_total.to_f * 100
-    product = {
-      :id => "9999",
-      :desc => "Verzendkosten",
-      :quantity => "1",
-      :price => ship_cost.round.to_s() + "\n"
-    }
-    return product
-  end
-  
-  def add_btw(order)
-  	order_btw = order.tax_total.to_f * 100
-  	product = {
-      :id => "9998",
-      :desc => "BTW",
-      :quantity => "1",
-      :price => order_btw.round.to_s() + "\n"
-    }
-    return product
-  end 	
+
 
   # get products in array
     def get_products(order)
@@ -195,9 +175,7 @@ class ExternalGateway < PaymentMethod
 				:price => product_price.round
 			}
 		end
-		
-		products[products.length] = add_shipping(order)
-		products[products.length] = add_btw(order)
+
 		
 		return products.to_s() + "\n"	
   end   
