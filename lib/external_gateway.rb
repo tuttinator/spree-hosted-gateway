@@ -154,7 +154,7 @@ class ExternalGateway < PaymentMethod
   	return self.preferences["language"]
   end
   
-  def get_validUntil
+  def get_validUntil(order)
   	t = Time.now + 2.hours
   	validuntil = t.strftime("%Y-%m-%d %H:%M:%S.%Z") 
   	return validuntil
