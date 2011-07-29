@@ -158,11 +158,55 @@ class ExternalGateway < PaymentMethod
   	t = Time.now + 2.hours
   	validuntil = t.strftime("%Y-%m-%d %H:%M:%S.%Z") 
   	return validuntil
-  end  
+  end 
+  
+  def add_shipping(order)
+	ship_cost = order.ship_total.to_f * 100
+    product = {
+      :id => "9999",
+      :desc => "Verzendkosten",
+      :quantity => "1",
+      :price => ship_cost.round.to_s() + "\n"
+    }
+    return product
+  end
+  
+  def add_btw(order)
+  	order_btw = order.tax_total.to_f * 100
+  	product = {
+      :id => "9998",
+      :desc => "BTW",
+      :quantity => "1",
+      :price => order_btw.round.to_s() + "\n"
+    }
+    return product
+  end 	
+
+  # get products in array
+    def get_products(order)
+	products = Array.new();
+	
+		order.products.each_with_index do |product, i|
+			product_price = product.price.to_f * 100			
+			products[i] = {
+				:id => product.id,
+				:desc => product.name, 
+				:quantity => order.line_items[0].quantity,
+				:price => product_price.round
+			}
+		end
+		
+		products[products.length] = add_shipping(order)
+		products[products.length] = add_btw(order)
+		
+		return products.to_s() + "\n"	
+  end   
   
   def get_paymentType
  	return self.preferences["paymentType"]
   end
+  
+  
   
 
 end
