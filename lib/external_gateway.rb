@@ -131,6 +131,14 @@ class ExternalGateway < PaymentMethod
   	return self.preferences["merchantID"]
   end
   
+  def get_subID
+  	return self.preferences["subID"]
+  end
+  
+  def get_purchaseID(order)
+  	return order.number.to_s() + "\n"
+  end  
+  
 
 end
 
