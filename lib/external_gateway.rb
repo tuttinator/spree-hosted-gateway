@@ -137,6 +137,21 @@ class ExternalGateway < PaymentMethod
   
   def get_purchaseID(order)
   	return order.number.to_s() + "\n"
+  end
+  
+  def get_amount(order)
+    order_item_total = order.item_total.to_f * 100
+    order_adjustment_total = order.adjustment_total.to_f * 100
+    order_total = order_item_total + order_adjustment_total
+    return order_total.round
+  end
+  
+  def get_currency
+  	return self.preferences["currency"]
+  end
+  
+  def get_language
+  	return self.preferences["language"]
   end  
   
 
