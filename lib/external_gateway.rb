@@ -232,6 +232,9 @@ class ExternalGateway < PaymentMethod
   		hashprimer = hashprimer + n[:price].to_s() + "\n"
   	end
 	hashprimer = hashprimer.gsub(/\n/, '')
+	hashprimer = hashprimer.gsub(/\t/, '')
+	hashprimer = hashprimer.gsub(/\r/, '')
+	hashprimer = hashprimer.gsub(/ /, '')
   	return Digest::SHA1.hexdigest(hashprimer)	
   	
   end
