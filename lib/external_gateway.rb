@@ -28,7 +28,6 @@ class ExternalGateway < PaymentMethod
   preference :subID, :string, :default => "0"
   preference :currency, :string, :default => "EUR"
   preference :paymentType, :string, :default => "ideal"
-  preference :hash, :string, :default => "SHA-1"
   
   # from admin => DB
   preference :merchantID, :string, :default => "002031546"
@@ -220,18 +219,18 @@ class ExternalGateway < PaymentMethod
   	hashprimer = ""
   	hashprimer = hashprimer + self.preferences["secret"] +"&"
   	hashprimer = hashprimer + self.preferences["merchantID"] + "&" unless self.preferences["merchantID"].nil?
-  	#hashprimer = hashprimer + self.preferences["subID"] + "&" unless self.preferences["subID"].nil?
+  	hashprimer = hashprimer + self.preferences["subID"] + "&" unless self.preferences["subID"].nil?
 
-  	#hashprimer = hashprimer + get_amount(order) + "&" unless get_amount(order).nil?  	
-  	#hashprimer = hashprimer + get_purchaseID(order) + "&" unless get_purchaseID(order).nil?
-  	#hashprimer = hashprimer + get_validUntil + "&" unless get_validUntil.nil?
+  	hashprimer = hashprimer + get_amount(order) + "&" unless get_amount(order).nil?  	
+  	hashprimer = hashprimer + get_purchaseID(order) + "&" unless get_purchaseID(order).nil?
+  	hashprimer = hashprimer + get_validUntil + "&" unless get_validUntil.nil?
 
-  	#get_products(order).each do |n|
-  	#	hashprimer = hashprimer + n[:id].to_s + "&"
-  	#	hashprimer = hashprimer + n[:desc].to_s + "&"
-  	#	hashprimer = hashprimer + n[:quantity].to_s + "&"
-  	#	hashprimer = hashprimer + n[:price].to_s + "&"
-  	#end
+  	get_products(order).each do |n|
+  		hashprimer = hashprimer + n[:id].to_s + "&"
+  		hashprimer = hashprimer + n[:desc].to_s + "&"
+  		hashprimer = hashprimer + n[:quantity].to_s + "&"
+  		hashprimer = hashprimer + n[:price].to_s + "&"
+  	end
 	
   	return Digest::SHA1.hexdigest(hashprimer)	
   	
