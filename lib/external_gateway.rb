@@ -217,20 +217,20 @@ class ExternalGateway < PaymentMethod
   # hash order
   def get_hash(order)
   	hashprimer = ""
-  	hashprimer = hashprimer + self.preferences["secret"] +"&"
-  	hashprimer = hashprimer + self.preferences["merchantID"] + "&" unless self.preferences["merchantID"].nil?
-  	hashprimer = hashprimer + self.preferences["subID"] + "&" unless self.preferences["subID"].nil?
+  	hashprimer = hashprimer + self.preferences["secret"]
+  	hashprimer = hashprimer + self.preferences["merchantID"]
+  	hashprimer = hashprimer + self.preferences["subID"]
 
-  	hashprimer = hashprimer + get_amount(order) + "&" unless get_amount(order).nil?  	
-  	hashprimer = hashprimer + get_purchaseID(order) + "&" unless get_purchaseID(order).nil?
-  	hashprimer = hashprimer + get_validUntil + "&" unless get_validUntil.nil?
+  	hashprimer = hashprimer + get_amount(order)	
+  	hashprimer = hashprimer + get_purchaseID(order)
+  	hashprimer = hashprimer + get_validUntil(order)
 
-  	get_products(order).each do |n|
-  		hashprimer = hashprimer + n[:id].to_s + "&"
-  		hashprimer = hashprimer + n[:desc].to_s + "&"
-  		hashprimer = hashprimer + n[:quantity].to_s + "&"
-  		hashprimer = hashprimer + n[:price].to_s + "&"
-  	end
+  	#get_products(order).each do |n|
+  	#	hashprimer = hashprimer + n[:id].to_s + "&"
+  	#	hashprimer = hashprimer + n[:desc].to_s + "&"
+  	#	hashprimer = hashprimer + n[:quantity].to_s + "&"
+  	#	hashprimer = hashprimer + n[:price].to_s + "&"
+  	#end
 	
   	return Digest::SHA1.hexdigest(hashprimer)	
   	
