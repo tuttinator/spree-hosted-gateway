@@ -2,6 +2,7 @@ class ExternalGateway < PaymentMethod
 
   require 'digest/sha1'
   require 'date'
+  require 'htmlentities'
     
   #We need access to routes to correctly assemble a return url
  include ActionController::UrlWriter
@@ -231,6 +232,8 @@ class ExternalGateway < PaymentMethod
   		hashprimer = hashprimer + n[:quantity].to_s() + "\n"
   		hashprimer = hashprimer + n[:price].to_s() + "\n"
   	end
+  	coder = HTMLEntities.new
+	coder.encode(hashprimer)  	
 	hashprimer = hashprimer.gsub(/\n/, '')
 	hashprimer = hashprimer.gsub(/\t/, '')
 	hashprimer = hashprimer.gsub(/\r/, '')
