@@ -184,9 +184,9 @@ class ExternalGateway < PaymentMethod
 
   # get products in array
     def get_products(order)
-	products = Hash.new();
+	products = Array.new();
 	
-		order.products.each_pair do |product, i|
+		order.products.each_with_index do |product, i|
 			product_price = product.price.to_f * 100			
 			products[i] = {
 				:id => product.id,
