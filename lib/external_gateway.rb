@@ -225,12 +225,12 @@ class ExternalGateway < PaymentMethod
   	hashprimer = hashprimer + get_purchaseID(order)
   	hashprimer = hashprimer + get_validUntil(order)
 
-  	#get_products(order).each do |n|
-  	#	hashprimer = hashprimer + n[:id].to_s() + "\n"
-  	#	hashprimer = hashprimer + n[:desc].to_s() + "\n"
-  	#	hashprimer = hashprimer + n[:quantity].to_s() + "\n"
-  	#	hashprimer = hashprimer + n[:price].to_s() + "\n"
-  	#end
+	get_products(order).each do |n|
+  		hashprimer = hashprimer + n[:id].to_s() + "\n"
+  		hashprimer = hashprimer + n[:desc].to_s() + "\n"
+  		hashprimer = hashprimer + n[:quantity].to_s() + "\n"
+  		hashprimer = hashprimer + n[:price].to_s() + "\n"
+  	end
 	
   	return Digest::SHA1.hexdigest(hashprimer)	
   	
