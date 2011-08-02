@@ -195,7 +195,7 @@ class ExternalGateway < PaymentMethod
 				:price => product_price.round.to_s()
 			}
 		end
-			products[products.length] = add_btw(order)
+#			products[products.length] = add_btw(order)
 		return products	
   end   
   
