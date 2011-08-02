@@ -33,9 +33,9 @@ class ExternalGateway < PaymentMethod
   # from admin => DB
   preference :merchantID, :string, :default => "002031546"
   preference :description, :string, :default => "Evans & Watson"
- # preference :urlSuccess, :string, :default => "http://127.0.0.1/checkout/confirm/"
- # preference :urlCancel, :string, :default => "http://127.0.0.1/checkout/payment/"
- # preference :urlError, :string, :default => "http://127.0.0.1/checkout/payment/error"
+  preference :urlSuccess, :string, :default => "http://127.0.0.1/checkout/confirm/"
+  preference :urlCancel, :string, :default => "http://127.0.0.1/checkout/payment/"
+  preference :urlError, :string, :default => "http://127.0.0.1/checkout/payment/error"
   preference :secret, :string, :default => "eju2c5CoRHZlHoTc"
 
   #An array of preferences that should not be automatically inserted into the form
@@ -166,7 +166,7 @@ class ExternalGateway < PaymentMethod
       :id => "9998",
       :desc => "BTW",
       :quantity => "1",
-      :price => order_btw.round.to_s() + "\n"
+      :price => order_btw.round.to_s()
     }
     return product
   end
@@ -195,7 +195,7 @@ class ExternalGateway < PaymentMethod
 				:price => product_price.round.to_s()
 			}
 		end
-		#products[products.length] = add_btw(order) && add_shipping(order)
+			products[products.length] = add_btw(order)
 		return products	
   end   
   
