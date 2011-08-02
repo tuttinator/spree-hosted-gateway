@@ -224,14 +224,16 @@ class ExternalGateway < PaymentMethod
 
   	hashprimer = hashprimer + get_amount(order)	
   	hashprimer = hashprimer + get_purchaseID(order)
+  	hashprimer = hashprimer + self.preferences["paymentType"]
   	hashprimer = hashprimer + get_validUntil(order)
 
 	get_products(order).each do |n|
-  		hashprimer = hashprimer + n[:id].to_s() + "\n"
-  		hashprimer = hashprimer + n[:desc].to_s() + "\n"
-  		hashprimer = hashprimer + n[:quantity].to_s() + "\n"
-  		hashprimer = hashprimer + n[:price].to_s() + "\n"
+  		hashprimer = hashprimer + n[:id].to_s() + ".\n"
+  		hashprimer = hashprimer + n[:desc].to_s() + ".\n"
+  		hashprimer = hashprimer + n[:quantity].to_s() + ".\n"
+  		hashprimer = hashprimer + n[:price].to_s() + ".\n"
   	end
+  	
   	coder = HTMLEntities.new
 	coder.encode(hashprimer)
   	
@@ -239,7 +241,8 @@ class ExternalGateway < PaymentMethod
 	hashprimer = hashprimer.gsub(/\t/, '')
 	hashprimer = hashprimer.gsub(/\r/, '')
 	hashprimer = hashprimer.gsub(/ /, '')
-  	return hashprimer
+	
+  	return Digest::SHA1.hexdigest(hashprimer)
   	
   end
     
