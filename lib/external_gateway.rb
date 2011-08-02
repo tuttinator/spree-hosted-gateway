@@ -203,8 +203,39 @@ class ExternalGateway < PaymentMethod
  	return self.preferences["paymentType"]
   end
   
+    def get_urlSuccess
+  	return self.preferences["urlSuccess"]
+  end
   
+  def get_urlCancel
+  	return self.preferences["urlCancel"]
+  end
   
+  def get_urlError
+  	return self.preferences["urlError"]
+  end
+  
+  # hash order
+  def get_hash(order)
+  	hashprimer = ""
+  	hashprimer = hashprimer + self.preferences["secret"] +"&"
+  	hashprimer = hashprimer + self.preferences["merchantID"] + "&" unless self.preferences["merchantID"].nil?
+  	#hashprimer = hashprimer + self.preferences["subID"] + "&" unless self.preferences["subID"].nil?
 
+  	#hashprimer = hashprimer + get_amount(order) + "&" unless get_amount(order).nil?  	
+  	#hashprimer = hashprimer + get_purchaseID(order) + "&" unless get_purchaseID(order).nil?
+  	#hashprimer = hashprimer + get_validUntil + "&" unless get_validUntil.nil?
+
+  	#get_products(order).each do |n|
+  	#	hashprimer = hashprimer + n[:id].to_s + "&"
+  	#	hashprimer = hashprimer + n[:desc].to_s + "&"
+  	#	hashprimer = hashprimer + n[:quantity].to_s + "&"
+  	#	hashprimer = hashprimer + n[:price].to_s + "&"
+  	#end
+	
+  	return Digest::SHA1.hexdigest(hashprimer)	
+  	
+  end
+    
 end
 
