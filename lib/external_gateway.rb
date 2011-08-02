@@ -156,7 +156,7 @@ class ExternalGateway < PaymentMethod
   
   def get_validUntil(order)
   	t = Time.now + 2.hours
-  	validuntil = t.strftime("%Y-%m-%d %H:%M:%S.%Z") 
+  	validuntil = t.strftime("%Y-%m-%dT%H:%M:%S.%Z") 
   	return validuntil
   end 
   
@@ -233,7 +233,8 @@ class ExternalGateway < PaymentMethod
   		hashprimer = hashprimer + n[:price].to_s() + "\n"
   	end
   	coder = HTMLEntities.new
-	coder.encode(hashprimer)  	
+	coder.encode(hashprimer)
+  	
 	hashprimer = hashprimer.gsub(/\n/, '')
 	hashprimer = hashprimer.gsub(/\t/, '')
 	hashprimer = hashprimer.gsub(/\r/, '')
