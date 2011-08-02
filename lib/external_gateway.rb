@@ -142,7 +142,7 @@ class ExternalGateway < PaymentMethod
     order_item_total = order.item_total.to_f * 100
     order_adjustment_total = order.adjustment_total.to_f * 100
     order_total = order_item_total + order_adjustment_total
-    return order_total.round
+    return order_total.round.to_s() + "\n"
   end
   
   def get_currency
@@ -223,7 +223,7 @@ class ExternalGateway < PaymentMethod
 
   	hashprimer = hashprimer + get_amount(order)	
   	hashprimer = hashprimer + get_purchaseID(order)
-  	hashprimer = hashprimer + get_validUntil(order)
+#  	hashprimer = hashprimer + get_validUntil(order)
 
   	#get_products(order).each do |n|
   	#	hashprimer = hashprimer + n[:id].to_s + "&"
