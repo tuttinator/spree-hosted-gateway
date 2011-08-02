@@ -218,20 +218,20 @@ class ExternalGateway < PaymentMethod
   # hash order
   def get_hash(order)
   	hashprimer = ""
-  	hashprimer = hashprimer + self.preferences["secret"] + "." unless self.preferences["secret"].nil?
-  	hashprimer = hashprimer + self.preferences["merchantID"] + "." unless self.preferences["merchantID"].nil?
-  	hashprimer = hashprimer + self.preferences["subID"] + "." unless self.preferences["subID"].nil?
+  	hashprimer = hashprimer + self.preferences["secret"]
+  	hashprimer = hashprimer + self.preferences["merchantID"]
+  	hashprimer = hashprimer + self.preferences["subID"]
 
-  	hashprimer = hashprimer + get_amount(order) + "." unless get_amount(order).nil?	
-  	hashprimer = hashprimer + get_purchaseID(order) + "." unless get_purchaseID(order).nil?
-  	hashprimer = hashprimer + self.preferences["paymentType"] + "." unless self.preferences["subID"].nil?
-  	hashprimer = hashprimer + get_validUntil(order) + "." unless get_purchaseID(order).nil?
+  	hashprimer = hashprimer + get_amount(order)	
+  	hashprimer = hashprimer + get_purchaseID(order)
+  	hashprimer = hashprimer + self.preferences["paymentType"]
+  	hashprimer = hashprimer + get_validUntil(order)
 
 	get_products(order).each do |n|
-  		hashprimer = hashprimer + n[:id].to_s() + ".\n"
-  		hashprimer = hashprimer + n[:desc].to_s() + ".\n"
-  		hashprimer = hashprimer + n[:quantity].to_s() + ".\n"
-  		hashprimer = hashprimer + n[:price].to_s() + ".\n"
+  		hashprimer = hashprimer + n[:id].to_s() + "\n"
+  		hashprimer = hashprimer + n[:desc].to_s() + "\n"
+  		hashprimer = hashprimer + n[:quantity].to_s() + "\n"
+  		hashprimer = hashprimer + n[:price].to_s() + "\n"
   	end
   	
   	coder = HTMLEntities.new
@@ -242,8 +242,8 @@ class ExternalGateway < PaymentMethod
 	hashprimer = hashprimer.gsub(/\r/, '')
 	hashprimer = hashprimer.gsub(/ /, '')
 	
-  	#return Digest::SHA1.hexdigest(hashprimer)
-  	return hashprimer
+  	return Digest::SHA1.hexdigest(hashprimer)
+  	
   end
     
 end
