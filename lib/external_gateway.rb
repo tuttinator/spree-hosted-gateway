@@ -36,7 +36,7 @@ class ExternalGateway < PaymentMethod
   preference :urlSuccess, :string, :default => "http://127.0.0.1/checkout/confirm/"
   preference :urlCancel, :string, :default => "http://127.0.0.1/checkout/payment/"
   preference :urlError, :string, :default => "http://127.0.0.1/checkout/payment/error"
-  preference :secret, :string, :default => "eju2c5CoRHZlHoTc"
+  preference :secret, :string, :default => "NGgfIqGfY1Cuu3hZ"
 
   #An array of preferences that should not be automatically inserted into the form
   INTERNAL_PREFERENCES = [:server, :status_param_key, :successful_transaction_value, :custom_data]
