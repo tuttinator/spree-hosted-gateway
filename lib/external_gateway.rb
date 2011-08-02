@@ -184,7 +184,7 @@ class ExternalGateway < PaymentMethod
 
   # get products in array
     def get_products(order)
-	products = Array.new();
+	products = Hash.new();
 	
 		order.products.each_with_index do |product, i|
 			product_price = product.price.to_f * 100			
@@ -195,9 +195,7 @@ class ExternalGateway < PaymentMethod
 				:price => product_price.round.to_s() + "\n"
 			}
 		end
-#		products[products.length] = add_btw(order)
-#		return products
-#		products[products.length] = add_shipping(order)
+		#products[products.length] = add_btw(order) && add_shipping(order)
 		return products	
   end   
   
