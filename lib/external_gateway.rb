@@ -26,12 +26,12 @@ class ExternalGateway < PaymentMethod
   
   #hardcoded
   preference :language, :string, :default => 'nl'
-  preference :subID, :string, :default => "0"
+  preference :subid, :string, :default => "0"
   preference :currency, :string, :default => "EUR"
   preference :payment_type, :string, :default => "ideal"
   
   # from admin => DB
-  preference :merchantID, :string, :default => "002031546"
+  preference :merchantid, :string, :default => "002031546"
   preference :description, :string, :default => "Evans & Watson - Bestelling"
   preference :urlsuccess, :string, :default => "http://localhost:3000/checkout/confirm/"
   preference :urlcancel, :string, :default => "http://localhost:3000/checkout/payment/"
@@ -128,11 +128,11 @@ class ExternalGateway < PaymentMethod
   end
   
   def get_merchantID
-  	return self.preferences["merchantID"]
+  	return self.preferences["merchantid"]
   end
   
   def get_subID
-  	return self.preferences["subID"]
+  	return self.preferences["subid"]
   end
   
   def get_purchaseID(order)
