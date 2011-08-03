@@ -33,9 +33,9 @@ class ExternalGateway < PaymentMethod
   # from admin => DB
   preference :merchantID, :string, :default => "002031546"
   preference :description, :string, :default => "Evans & Watson - Bestelling"
-  preference :urlSuccess, :string, :default => "http://localhost:3000/checkout/confirm/"
-  preference :urlCancel, :string, :default => "http://localhost:3000/checkout/payment/"
-  preference :urlError, :string, :default => "http://localhost:3000/checkout/payment/error"
+  preference :urlsuccess, :string, :default => "http://localhost:3000/checkout/confirm/"
+  preference :urlcancel, :string, :default => "http://localhost:3000/checkout/payment/"
+  preference :urlerror, :string, :default => "http://localhost:3000/checkout/payment/error"
   preference :secret, :string, :default => "NGgfIqGfY1Cuu3hZ"
 
   #An array of preferences that should not be automatically inserted into the form
@@ -204,20 +204,20 @@ class ExternalGateway < PaymentMethod
 		return products	
   end   
   
-  def get_payment_type
- 	return self.preferences["paymentType"]
+  def get_paymentType
+ 	return self.preferences["payment_type"]
   end
   
     def get_urlSuccess
-  	return self.preferences["urlSuccess"]
+  	return self.preferences["urlsuccess"]
   end
   
   def get_urlCancel
-  	return self.preferences["urlCancel"]
+  	return self.preferences["urlcancel"]
   end
   
   def get_urlError
-  	return self.preferences["urlError"]
+  	return self.preferences["urlerror"]
   end
   
   # hash order
@@ -229,7 +229,7 @@ class ExternalGateway < PaymentMethod
 
   	hashprimer = hashprimer + get_amount(order)	
   	hashprimer = hashprimer + get_purchaseID(order)
-  	hashprimer = hashprimer + self.preferences["paymentType"]
+  	hashprimer = hashprimer + self.preferences["payment_type"]
   	hashprimer = hashprimer + get_validUntil(order)
 
 	get_products(order).each do |n|
