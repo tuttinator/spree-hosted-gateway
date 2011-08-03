@@ -200,6 +200,7 @@ class ExternalGateway < PaymentMethod
 			}
 		end
 			products[products.length] = add_btw(order)
+			products[products.length] = add_shipping(order)			
 		return products	
   end   
   
