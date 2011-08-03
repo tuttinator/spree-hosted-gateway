@@ -32,7 +32,7 @@ class ExternalGateway < PaymentMethod
   
   # from admin => DB
   preference :merchantID, :string, :default => "002031546"
-  preference :description, :string, :default => "Evans & Watson"
+  preference :description, :string, :default => "Evans & Watson - Bestelling"
   preference :urlSuccess, :string, :default => "http://127.0.0.1/checkout/confirm/"
   preference :urlCancel, :string, :default => "http://127.0.0.1/checkout/payment/"
   preference :urlError, :string, :default => "http://127.0.0.1/checkout/payment/error"
@@ -144,6 +144,10 @@ class ExternalGateway < PaymentMethod
     order_adjustment_total = order.adjustment_total.to_f * 100
     order_total = order_item_total + order_adjustment_total
     return order_total.round.to_s() + "\n"
+  end
+  
+  def get_description
+  	return self.preferences["description"]
   end
   
   def get_currency
