@@ -25,15 +25,14 @@ class ExternalGateway < PaymentMethod
     # Rabobank iDEAL Lite - specific methods added by: Arjan Landman
   
   #hardcoded
-  preference :language, :string, :default => "nl"
+  preference :language, :string, :default => 'nl'
   preference :subID, :string, :default => "0"
   preference :currency, :string, :default => "EUR"
-  preference :paymentType, :string, :default => "ideal"
+  preference :payment_type, :string, :default => "ideal"
   
   # from admin => DB
   preference :merchantID, :string, :default => "002031546"
   preference :description, :string, :default => "Evans & Watson - Bestelling"
-# TODO for Production, remove _with_port
   preference :urlSuccess, :string, :default => "http://localhost:3000/checkout/confirm/"
   preference :urlCancel, :string, :default => "http://localhost:3000/checkout/payment/"
   preference :urlError, :string, :default => "http://localhost:3000/checkout/payment/error"
@@ -205,7 +204,7 @@ class ExternalGateway < PaymentMethod
 		return products	
   end   
   
-  def get_paymentType
+  def get_payment_type
  	return self.preferences["paymentType"]
   end
   
