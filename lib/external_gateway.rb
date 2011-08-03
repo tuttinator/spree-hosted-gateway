@@ -26,9 +26,9 @@ class ExternalGateway < PaymentMethod
   
   #hardcoded
   preference :language, :string, :default => 'nl'
-  preference :subid, :string, :default => "0"
-  preference :currency, :string, :default => "EUR"
-  preference :payment_type, :string, :default => "ideal"
+  preference :subid, :string, :default => '0'
+  preference :currency, :string, :default => 'EUR'
+  preference :paymenttype, :string, :default => 'ideal'
   
   # from admin => DB
   preference :merchantid, :string, :default => "002031546"
@@ -224,8 +224,8 @@ class ExternalGateway < PaymentMethod
   def get_hash(order)
   	hashprimer = ""
   	hashprimer = hashprimer + self.preferences["secret"]
-  	hashprimer = hashprimer + self.preferences["merchantID"]
-  	hashprimer = hashprimer + self.preferences["subID"]
+  	hashprimer = hashprimer + self.preferences["merchantid"]
+  	hashprimer = hashprimer + self.preferences["subid"]
 
   	hashprimer = hashprimer + get_amount(order)	
   	hashprimer = hashprimer + get_purchaseID(order)
