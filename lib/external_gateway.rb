@@ -28,7 +28,7 @@ class ExternalGateway < PaymentMethod
   preference :language, :string, :default => 'nl'
   preference :subid, :string, :default => '0'
   preference :currency, :string, :default => 'EUR'
-  preference :paymenttype, :string, :default => 'ideal'
+  preference :payment_type, :string, :default => 'ideal'
   
   # from admin => DB
   preference :merchantid, :string, :default => "002031546"
