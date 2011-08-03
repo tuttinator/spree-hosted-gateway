@@ -33,9 +33,10 @@ class ExternalGateway < PaymentMethod
   # from admin => DB
   preference :merchantID, :string, :default => "002031546"
   preference :description, :string, :default => "Evans & Watson - Bestelling"
-  preference :urlSuccess, :string, :default => "http://127.0.0.1/checkout/confirm/"
-  preference :urlCancel, :string, :default => "http://127.0.0.1/checkout/payment/"
-  preference :urlError, :string, :default => "http://127.0.0.1/checkout/payment/error"
+# TODO for Production, remove _with_port
+  preference :urlSuccess, :string, :default => host_with_port"/checkout/confirm/"
+  preference :urlCancel, :string, :default => host_with_port"/checkout/payment/"
+  preference :urlError, :string, :default => host_with_port"/checkout/payment/error"
   preference :secret, :string, :default => "NGgfIqGfY1Cuu3hZ"
 
   #An array of preferences that should not be automatically inserted into the form
