@@ -33,13 +33,13 @@ class ExternalGateway < PaymentMethod
   # from admin => DB
   preference :merchantid, :string, :default => "002031546"
   preference :description, :string, :default => "Evans & Watson - Bestelling"
-  preference :urlsuccess, :string, :default => "http://localhost:3000/checkout/confirm/"
-  preference :urlcancel, :string, :default => "http://localhost:3000/checkout/payment/"
-  preference :urlerror, :string, :default => "http://localhost:3000/checkout/payment/error"
+  preference :urlsuccess, :string, :default => "success"
+  preference :urlcancel, :string, :default => "cancel"
+  preference :urlerror, :string, :default => "error"
   preference :secret, :string, :default => "NGgfIqGfY1Cuu3hZ"
 
   #An array of preferences that should not be automatically inserted into the form
-  INTERNAL_PREFERENCES = [:server, :status_param_key, :successful_transaction_value, :custom_data]
+  INTERNAL_PREFERENCES = [:server, :status_param_key, :successful_transaction_value, :custom_data, :urlsuccess, :urlcancel, :urlerror]
 
   #Arbitrarily, this class is called ExternalGateway, but the extension is a whole is named 'HostedGateway', so
   #this is what we want our checkout/admin view partials to be named.
@@ -53,19 +53,20 @@ class ExternalGateway < PaymentMethod
   #For convenience, and to validate the incoming response from the gateway somewhat, it also attempts
   #to find the order from the parameters we sent the gateway as part of the return URL and returns it
   #along with the transaction status.
-  def process_response(params)
-    begin
-      #Find order
-      order = Order.find_by_number(ExternalGateway.parse_custom_data(params)["order_number"])
-      raise ActiveRecord::RecordNotFound if order.token != ExternalGateway.parse_custom_data(params)["order_token"]
+   def process_response(params)
+       begin
+       #Find order
+       order = Order.find_by_number(ExternalGateway.parse_custom_data(params)["id"])
+       puts "#{order}"
+       raise ActiveRecord::RecordNotFound if order.token != ExternalGateway.parse_custom_data(params)["order_token"]
 
-      #Check for successful response
-      transaction_succeeded = params[self.preferred_status_param_key.to_sym] == self.preferred_successful_transaction_value.to_s
-      return [order, transaction_succeeded]
-    rescue ActiveRecord::RecordNotFound
-      #Return nil and false if we couldn't find the order - this is probably bad.
-      return [nil, false]
-    end
+       #Check for successful response
+       transaction_succeeded = params[self.preferred_status_param_key.to_sym] == self.preferred_successful_transaction_value.to_s
+       return [order, transaction_succeeded]
+     rescue ActiveRecord::RecordNotFound
+       #Return nil and false if we couldn't find the order - this is probably bad.
+       return [nil, false]
+     end
   end
 
   #This is basically a attr_reader for server, but makes sure that it has been set.
@@ -89,7 +90,8 @@ class ExternalGateway < PaymentMethod
   #that the controller can find what it needs to.
   #By default, we try and parse JSON out of the param.
   def self.parse_custom_data(params)
-    return ActiveSupport::JSON.decode(params[:custom_data])
+    return (params[:custom_data].nil?) ? "" : ActiveSupport::JSON.decode(params[:custom_data])
+    #return ActiveSupport::JSON.decode(params[:custom_data])
   end
 
 
@@ -209,15 +211,21 @@ class ExternalGateway < PaymentMethod
   end
   
     def get_urlSuccess
-  	return self.preferences["urlsuccess"]
+  	returner = self.preferences["urlsuccess"]
+  	returner = returner + "/#{order.id}/";
+  	return returner
   end
   
   def get_urlCancel
-  	return self.preferences["urlcancel"]
+   	returner = self.preferences["urlcancel"]
+  	returner = returner + "/#{order.id}/";
+  	return returner
   end
   
   def get_urlError
-  	return self.preferences["urlerror"]
+   	returner = self.preferences["urlerror"]
+  	returner = returner + "/#{order.id}/";
+  	return returner
   end
   
   # hash order
@@ -231,6 +239,9 @@ class ExternalGateway < PaymentMethod
   	hashprimer = hashprimer + get_purchaseID(order)
   	hashprimer = hashprimer + self.preferences["payment_type"]
   	hashprimer = hashprimer + get_validUntil(order)
+  	hahsprimer = hashprimer + get_urlSuccess(order) unless get_urlSuccess(order).nil?
+ 	hahsprimer = hashprimer + get_urlCancel(order) unless get_urlCancel(order).nil?  	
+ 	hahsprimer = hashprimer + get_urlError(order) unless get_urlError(order).nil?  	
 
 	get_products(order).each do |n|
   		hashprimer = hashprimer + n[:id].to_s() + "\n"
@@ -238,10 +249,10 @@ class ExternalGateway < PaymentMethod
   		hashprimer = hashprimer + n[:quantity].to_s() + "\n"
   		hashprimer = hashprimer + n[:price].to_s() + "\n"
   	end
-  	
+  	# Encode HTML 
   	coder = HTMLEntities.new
 	coder.encode(hashprimer)
-  	
+  	# Remove whitespaces etc..
 	hashprimer = hashprimer.gsub(/\n/, '')
 	hashprimer = hashprimer.gsub(/\t/, '')
 	hashprimer = hashprimer.gsub(/\r/, '')
