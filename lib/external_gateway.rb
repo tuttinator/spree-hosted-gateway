@@ -65,7 +65,7 @@ class ExternalGateway < PaymentMethod
        return [order, transaction_succeeded]
      rescue ActiveRecord::RecordNotFound
        #Return nil and false if we couldn't find the order - this is probably bad.
-       return [nil, false]
+       return payment.failure
      end
   end
 
