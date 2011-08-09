@@ -210,7 +210,7 @@ class ExternalGateway < PaymentMethod
  	return self.preferences["payment_type"]
   end
   
-    def get_urlSuccess
+  def get_urlSuccess
   	returner = self.preferences["urlsuccess"]
   	returner = returner + "/#{order.id}/";
   	return returner
