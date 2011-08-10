@@ -33,9 +33,9 @@ class ExternalGateway < PaymentMethod
   # from admin => DB
   preference :merchantid, :string, :default => "002031546"
   preference :description, :string, :default => "Evans & Watson - Bestelling"
-  preference :urlsuccess, :string, :default => "http://127.0.0.1/?id=#{order.id}&status=succes"
-  preference :urlcancel, :string, :default => "http://127.0.0.1/?id=#{order.id}&status=cancel"
-  preference :urlerror, :string, :default => "http://127.0.0.1/?id=#{order.id}&status=error"
+  #preference :urlsuccess, :string, :default => "http://127.0.0.1/?id=#{order.id}&status=succes"
+  #preference :urlcancel, :string, :default => "http://127.0.0.1/?id=#{order.id}&status=cancel"
+  #preference :urlerror, :string, :default => "http://127.0.0.1/?id=#{order.id}&status=error"
   preference :secret, :string, :default => "NGgfIqGfY1Cuu3hZ"
 
   #An array of preferences that should not be automatically inserted into the form
@@ -233,9 +233,6 @@ class ExternalGateway < PaymentMethod
   	hashprimer = hashprimer + get_purchaseID(order)
   	hashprimer = hashprimer + self.preferences["payment_type"]
   	hashprimer = hashprimer + get_validUntil(order)
-  	hahsprimer = hashprimer + get_urlSuccess(order) unless get_urlSuccess(order).nil?
- 	hahsprimer = hashprimer + get_urlCancel(order) unless get_urlCancel(order).nil?  	
- 	hahsprimer = hashprimer + get_urlError(order) unless get_urlError(order).nil?  	
 
 	get_products(order).each do |n|
   		hashprimer = hashprimer + n[:id].to_s() + "\n"
