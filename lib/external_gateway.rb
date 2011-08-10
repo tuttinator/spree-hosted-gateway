@@ -211,21 +211,15 @@ class ExternalGateway < PaymentMethod
   end
   
   def get_urlSuccess
-  	returner = self.preferences["urlsuccess"]
-  	returner = returner + "/#{order.id}/";
-  	return returner
+  	return self.preferences["urlsuccess"]
   end
   
   def get_urlCancel
-   	returner = self.preferences["urlcancel"]
-  	returner = returner + "/#{order.id}/";
-  	return returner
+   	return self.preferences["urlcancel"]
   end
   
   def get_urlError
-   	returner = self.preferences["urlerror"]
-  	returner = returner + "/#{order.id}/";
-  	return returner
+   	return self.preferences["urlerror"]
   end
   
   # hash order
