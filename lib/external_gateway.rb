@@ -33,9 +33,9 @@ class ExternalGateway < PaymentMethod
   # from admin => DB
   preference :merchantid, :string, :default => "002031546"
   preference :description, :string, :default => "Evans & Watson - Bestelling"
-  preference :urlsuccess, :string, :default => "success"
-  preference :urlcancel, :string, :default => "cancel"
-  preference :urlerror, :string, :default => "error"
+  preference :urlsuccess, :string, :default => "http://127.0.0.1/?id=#{order.id}&status=succes"
+  preference :urlcancel, :string, :default => "http://127.0.0.1/?id=#{order.id}&status=cancel"
+  preference :urlerror, :string, :default => "http://127.0.0.1/?id=#{order.id}&status=error"
   preference :secret, :string, :default => "NGgfIqGfY1Cuu3hZ"
 
   #An array of preferences that should not be automatically inserted into the form
@@ -65,7 +65,7 @@ class ExternalGateway < PaymentMethod
        return [order, transaction_succeeded]
      rescue ActiveRecord::RecordNotFound
        #Return nil and false if we couldn't find the order - this is probably bad.
-       return payment.failure
+       return [nil, false]
      end
   end
 
