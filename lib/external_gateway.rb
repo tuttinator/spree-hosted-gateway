@@ -33,13 +33,13 @@ class ExternalGateway < PaymentMethod
   # from admin => DB
   preference :merchantid, :string, :default => "002031546"
   preference :description, :string, :default => "Evans & Watson - Bestelling"
-  #preference :urlsuccess, :string, :default => "http://127.0.0.1/?id=#{order.id}&status=succes"
-  #preference :urlcancel, :string, :default => "http://127.0.0.1/?id=#{order.id}&status=cancel"
-  #preference :urlerror, :string, :default => "http://127.0.0.1/?id=#{order.id}&status=error"
+  preference :urlsuccess, :string, :default => "http://127.0.0.1/checkout/update/confirm"
+  preference :urlcancel, :string, :default => "http://127.0.0.1/checkout/:state"
+  preference :urlerror, :string, :default => "http://127.0.0.1/checkout/:state"
   preference :secret, :string, :default => "NGgfIqGfY1Cuu3hZ"
 
   #An array of preferences that should not be automatically inserted into the form
-  INTERNAL_PREFERENCES = [:server, :status_param_key, :successful_transaction_value, :custom_data, :urlsuccess, :urlcancel, :urlerror]
+  INTERNAL_PREFERENCES = [:server, :status_param_key, :successful_transaction_value, :custom_data]
 
   #Arbitrarily, this class is called ExternalGateway, but the extension is a whole is named 'HostedGateway', so
   #this is what we want our checkout/admin view partials to be named.
@@ -53,21 +53,21 @@ class ExternalGateway < PaymentMethod
   #For convenience, and to validate the incoming response from the gateway somewhat, it also attempts
   #to find the order from the parameters we sent the gateway as part of the return URL and returns it
   #along with the transaction status.
-   def process_response(params)
-       begin
-       #Find order
-       order = Order.find_by_number(ExternalGateway.parse_custom_data(params)["id"])
-       puts "#{order}"
-       raise ActiveRecord::RecordNotFound if order.token != ExternalGateway.parse_custom_data(params)["order_token"]
+  def process_response(params)
+    begin
+      #Find order
+      order = Order.find_by_number(ExternalGateway.parse_custom_data(params)["order_number"])
+      raise ActiveRecord::RecordNotFound if order.token != ExternalGateway.parse_custom_data(params)["order_token"]
 
-       #Check for successful response
-       transaction_succeeded = params[self.preferred_status_param_key.to_sym] == self.preferred_successful_transaction_value.to_s
-       return [order, transaction_succeeded]
-     rescue ActiveRecord::RecordNotFound
-       #Return nil and false if we couldn't find the order - this is probably bad.
-       return [nil, false]
-     end
+      #Check for successful response
+      transaction_succeeded = params[self.preferred_status_param_key.to_sym] == self.preferred_successful_transaction_value.to_s
+      return [order, transaction_succeeded]
+    rescue ActiveRecord::RecordNotFound
+      #Return nil and false if we couldn't find the order - this is probably bad.
+      return [nil, false]
+    end
   end
+
 
   #This is basically a attr_reader for server, but makes sure that it has been set.
   def get_server
