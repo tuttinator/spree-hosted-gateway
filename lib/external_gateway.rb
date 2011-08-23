@@ -216,10 +216,6 @@ class ExternalGateway < PaymentMethod
 	return returner
   end
   
-  def get_okreturn(order)
-
-
-  
   def get_urlCancel(order)
    	returner = self.preferences["urlcancel"]
    	returner = returner + "/#{order.id}/";
