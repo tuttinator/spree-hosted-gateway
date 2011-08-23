@@ -33,9 +33,9 @@ class ExternalGateway < PaymentMethod
   # from admin => DB
   preference :merchantid, :string, :default => "002031546"
   preference :description, :string, :default => "Evans & Watson - Bestelling"
-  preference :urlsuccess, :string, :default => "http://127.0.0.1/checkout/update/confirm"
-  preference :urlcancel, :string, :default => "http://127.0.0.1/checkout/:state"
-  preference :urlerror, :string, :default => "http://127.0.0.1/checkout/:state"
+  preference :urlsuccess, :string, :default => "http://127.0.0.1/"
+  preference :urlcancel, :string, :default => "http://127.0.0.1/cancel/"
+  preference :urlerror, :string, :default => "http://127.0.0.1/404/"
   preference :secret, :string, :default => "NGgfIqGfY1Cuu3hZ"
 
   #An array of preferences that should not be automatically inserted into the form
@@ -56,7 +56,7 @@ class ExternalGateway < PaymentMethod
   def process_response(params)
     begin
       #Find order
-      order = Order.find_by_number(ExternalGateway.parse_custom_data(params)["order_number"])
+      order = Order.find_by_number(ExternalGateway.parse_custom_data(params)["id"])
       raise ActiveRecord::RecordNotFound if order.token != ExternalGateway.parse_custom_data(params)["order_token"]
 
       #Check for successful response
@@ -210,16 +210,26 @@ class ExternalGateway < PaymentMethod
  	return self.preferences["payment_type"]
   end
   
-  def get_urlSuccess
-  	return self.preferences["urlsuccess"]
+  def get_urlSuccess(order)
+  	returner = self.preferences["urlsuccess"]
+	returner = returner + "/#{order.id}/";
+	return returner
   end
   
-  def get_urlCancel
-   	return self.preferences["urlcancel"]
+  def get_okreturn(order)
+
+
+  
+  def get_urlCancel(order)
+   	returner = self.preferences["urlcancel"]
+   	returner = returner + "/#{order.id}/";
+	return returner
   end
   
-  def get_urlError
-   	return self.preferences["urlerror"]
+  def get_urlError(order)
+   	returner = self.preferences["urlerror"]
+   	returner = returner + "/#{order.id}/";
+	return returner
   end
   
   # hash order
