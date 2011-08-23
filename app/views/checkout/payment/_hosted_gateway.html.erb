@@ -9,8 +9,6 @@
       $('form[id=checkout_form_payment]').attr('action', '<%= escape_javascript(payment_method.get_server) %>');
       $('form').attr('method', 'post');
       $('form').attr('accept-charset', 'UTF-8');
-      $('form').append("<%= escape_javascript(hidden_field_tag(:return_url, payment_method.get_return_url_for(@order, false))) %>");
-      $('form').append("<%= escape_javascript(hidden_field_tag(:custom_data, payment_method.get_custom_data_for(@order))) %>");     
       $('form').append("<%= escape_javascript(hidden_field_tag(:merchantID, payment_method.get_merchantID)) %>");
       $('form').append("<%= escape_javascript(hidden_field_tag(:subID, payment_method.get_subID)) %>");
       $('form').append("<%= escape_javascript(hidden_field_tag(:purchaseID, payment_method.get_purchaseID(@order))) %>");
