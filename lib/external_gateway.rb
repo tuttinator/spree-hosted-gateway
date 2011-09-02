@@ -1,4 +1,4 @@
-class ExternalGateway < PaymentMethod
+ class ExternalGateway < PaymentMethod
 
   require 'digest/sha1'
   require 'date'
@@ -231,6 +231,7 @@ class ExternalGateway < PaymentMethod
   # hash order
   def get_hash(order)
   	hashprimer = ""
+  	hashprimer = hashprimer + self.preferences["secret"]
   	hashprimer = hashprimer + self.preferences["merchantid"]
   	hashprimer = hashprimer + self.preferences["subid"]
   	hashprimer = hashprimer + get_purchaseID(order)
@@ -251,7 +252,6 @@ class ExternalGateway < PaymentMethod
   		hashprimer = hashprimer + n[:price].to_s() + "\n"
   	end
   	
-  	hashprimer = hashprimer + self.preferences["secret"]
   	# Encode HTML 
   	coder = HTMLEntities.new
 	coder.encode(hashprimer)
@@ -264,6 +264,6 @@ class ExternalGateway < PaymentMethod
   	return Digest::SHA1.hexdigest(hashprimer)
   	
   end
-    
+  
 end
 
