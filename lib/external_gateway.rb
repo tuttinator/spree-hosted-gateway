@@ -36,7 +36,7 @@
   preference :urlsuccess, :string, :default => "http://127.0.0.1/"
   preference :urlcancel, :string, :default => "http://127.0.0.1/cancel/"
   preference :urlerror, :string, :default => "http://127.0.0.1/404/"
-  preference :secret, :string, :default => "cJqMwgU9XFatXvbR"
+  preference :secret, :string, :default => "sOgLbweLlvk9Duv1"
 
   #An array of preferences that should not be automatically inserted into the form
   INTERNAL_PREFERENCES = [:server, :status_param_key, :successful_transaction_value, :custom_data]
