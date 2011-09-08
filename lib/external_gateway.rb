@@ -145,7 +145,7 @@
     order_item_total = order.item_total.to_f * 100
     order_adjustment_total = order.adjustment_total.to_f * 100
     order_total = order_item_total + order_adjustment_total
-    return order_total.round.to_s()
+    return order_total.round.to_s() + "\n"
   end
   
   def get_description
@@ -172,7 +172,7 @@
       :id => "9998",
       :desc => "BTW",
       :quantity => "1",
-      :price => order_btw.round.to_s()
+      :price => order_btw.round.to_s() + "\n"
     }
     return product
   end
