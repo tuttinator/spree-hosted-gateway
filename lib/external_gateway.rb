@@ -198,7 +198,7 @@
 				:id => product.id,
 				:desc => product.name, 
 				:quantity => order.line_items[0].quantity,
-				:price => product_price.round.to_s()
+				:price => product_price.round.to_s() + "\n"
 			}
 		end
 			products[products.length] = add_btw(order)
