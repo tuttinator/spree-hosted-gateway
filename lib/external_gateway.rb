@@ -33,9 +33,9 @@
   # from admin => DB
   preference :merchantid, :string, :default => "002031546"
   preference :description, :string, :default => "Evans & Watson - Bestelling"
-  preference :urlsuccess, :string, :default => "http://evansnwatson.heroku.com/"
-  preference :urlcancel, :string, :default => "http://evansnwatson.heroku.com/cancel/"
-  preference :urlerror, :string, :default => "http://evansnwatson.heroku.com/404/"
+  preference :urlsuccess, :string, :default => "http://evansnwatson.heroku.com"
+  preference :urlcancel, :string, :default => "http://evansnwatson.heroku.com/cancel"
+  preference :urlerror, :string, :default => "http://evansnwatson.heroku.com/404"
   preference :secret, :string, :default => "35Busds0wLRmw8lF"
 
   #An array of preferences that should not be automatically inserted into the form
@@ -213,19 +213,19 @@
   
   def get_urlSuccess(order)
   	returner = self.preferences["urlsuccess"]
-	returner = returner + "/#{order.number}/";
+	returner = returner + "/#{order.id}/";
 	return returner
   end
   
   def get_urlCancel(order)
    	returner = self.preferences["urlcancel"]
-   	returner = returner + "/#{order.number}/";
+   	returner = returner + "/#{order.id}/";
 	return returner
   end
   
   def get_urlError(order)
    	returner = self.preferences["urlerror"]
-   	returner = returner + "/#{order.number}/";
+   	returner = returner + "/#{order.id}/";
 	return returner
   end
   
@@ -241,10 +241,10 @@
   	hashprimer = hashprimer + get_validUntil(order)
 
 	get_products(order).each do |n|
-  		hashprimer = hashprimer + n[:id].to_s()
-  		hashprimer = hashprimer + n[:desc].to_s()
-  		hashprimer = hashprimer + n[:quantity].to_s()
-  		hashprimer = hashprimer + n[:price].to_s()
+  		hashprimer = hashprimer + n[:id].to_s() + "\n"
+  		hashprimer = hashprimer + n[:desc].to_s() + "\n"
+  		hashprimer = hashprimer + n[:quantity].to_s() + "\n"
+  		hashprimer = hashprimer + n[:price].to_s() + "\n"
   	end
   	
   	# Encode HTML 
