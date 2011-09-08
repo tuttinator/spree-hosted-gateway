@@ -241,10 +241,10 @@
   	hashprimer = hashprimer + get_validUntil(order)
 
 	get_products(order).each do |n|
-  		hashprimer = hashprimer + n[:id].to_s() + "\n"
-  		hashprimer = hashprimer + n[:desc].to_s() + "\n"
-  		hashprimer = hashprimer + n[:quantity].to_s() + "\n"
-  		hashprimer = hashprimer + n[:price].to_s() + "\n"
+  		hashprimer = hashprimer + n[:id].to_s()
+  		hashprimer = hashprimer + n[:desc].to_s()
+  		hashprimer = hashprimer + n[:quantity].to_s()
+  		hashprimer = hashprimer + n[:price].to_s()
   	end
   	
   	# Encode HTML 
