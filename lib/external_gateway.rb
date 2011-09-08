@@ -234,15 +234,9 @@
   	hashprimer = hashprimer + self.preferences["secret"]
   	hashprimer = hashprimer + self.preferences["merchantid"]
   	hashprimer = hashprimer + self.preferences["subid"]
-  	hashprimer = hashprimer + get_purchaseID(order)
   	hashprimer = hashprimer + get_amount(order)
-  	hashprimer = hashprimer + self.preferences["language"]
-  	hashprimer = hashprimer + self.preferences["currency"]
-  	hashprimer = hashprimer + self.preferences["description"]  	  	
+  	hashprimer = hashprimer + get_purchaseID(order)
   	hashprimer = hashprimer + self.preferences["payment_type"]
-  	hashprimer = hashprimer + get_urlSuccess(order)
-  	hashprimer = hashprimer + get_urlCancel(order)
-  	hashprimer = hashprimer + get_urlError(order)  	
   	hashprimer = hashprimer + get_validUntil(order)
 
 	get_products(order).each do |n|
