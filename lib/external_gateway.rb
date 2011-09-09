@@ -139,14 +139,14 @@
   end
   
   def get_purchaseID(order)
-  	return order.number.to_s() + "\n"
+  	return order.number.to_s
   end
   
   def get_amount(order)
     order_item_total = order.item_total.to_f * 100
     order_adjustment_total = order.adjustment_total.to_f * 100
     order_total = order_item_total + order_adjustment_total
-    return order_total.round.to_s() + "\n"
+    return order_total.round.to_s()
   end
   
   def get_description
