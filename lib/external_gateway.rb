@@ -33,9 +33,9 @@
   # from admin => DB
   preference :merchantid, :string, :default => "002031546"
   preference :description, :string, :default => "Evans & Watson - Bestelling"
-  preference :urlsuccess, :string, :default => "http://127.0.0.1/"
-  preference :urlcancel, :string, :default => "http://127.0.0.1/cancel/"
-  preference :urlerror, :string, :default => "http://127.0.0.1/404/"
+  preference :urlsuccess, :string, :default => "http://evansnwatson.heroku.com"
+  preference :urlcancel, :string, :default => "http://evannwatson.heroku.com/cancel"
+  preference :urlerror, :string, :default => "http://evansnwatson.heroku.com/"
   preference :secret, :string, :default => "cJqMwgU9XFatXvbR"
 
   #An array of preferences that should not be automatically inserted into the form
@@ -138,14 +138,14 @@
   end
   
   def get_purchaseID(order)
-  	return order.number.to_s()
+  	return order.number.to_s() + "\n"
   end
   
   def get_amount(order)
     order_item_total = order.item_total.to_f * 100
     order_adjustment_total = order.adjustment_total.to_f * 100
     order_total = order_item_total + order_adjustment_total
-    return order_total.round.to_s()
+    return order_total.round.to_s() + "\n"
   end
   
   def get_description
@@ -172,7 +172,7 @@
       :id => "9998",
       :desc => "BTW",
       :quantity => "1",
-      :price => order_btw.round.to_s()
+      :price => order_btw.round.to_s() + "\n"
     }
     return product
   end
@@ -198,7 +198,7 @@
 				:id => product.id,
 				:desc => product.name, 
 				:quantity => order.line_items[0].quantity,
-				:price => product_price.round.to_s() 
+				:price => product_price.round.to_s() + "\n"
 			}
 		end
 			products[products.length] = add_btw(order)
