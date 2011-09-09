@@ -35,7 +35,7 @@
   preference :description, :string, :default => "Evans & Watson - Bestelling"
   preference :urlsuccess, :string, :default => "http://evansnwatson.heroku.com"
   preference :urlcancel, :string, :default => "http://evannwatson.heroku.com/cancel"
-  preference :urlerror, :string, :default => "http://evansnwatson.heroku.com/"
+  preference :urlerror, :string, :default => "http://evansnwatson.heroku.com/404"
   preference :secret, :string, :default => "cJqMwgU9XFatXvbR"
 
   #An array of preferences that should not be automatically inserted into the form
@@ -146,7 +146,7 @@
     order_item_total = order.item_total.to_f * 100
     order_adjustment_total = order.adjustment_total.to_f * 100
     order_total = order_item_total + order_adjustment_total
-    return order_total.round.to_s()
+    return order_total.round.to_s() + "\n"
   end
   
   def get_description
@@ -184,7 +184,7 @@
       :id => "9999",
       :desc => "Verzendkosten",
       :quantity => "1",
-      :price => ship_cost.round.to_s()
+      :price => ship_cost.round.to_s() + "\n"
     }
     return product
   end   	  
