@@ -56,8 +56,8 @@
   def process_response(params)
     begin
       #Find order
-      order = Order.find_by_number(ExternalGateway.parse_custom_data(params)["id"])
-      #order = Order.find_by_number(params["ideal_id"])
+      #order = Order.find_by_number(ExternalGateway.parse_custom_data(params)["id"])
+      order = Order.find_by_number(params["ideal_id"])
       #status = params[:status]
       raise ActiveRecord::RecordNotFound if order.nil?
       #raise ActiveRecord::RecordNotFound if order.token != ExternalGateway.parse_custom_data(params)["order_token"]
@@ -216,7 +216,7 @@
   
   def get_urlSuccess(order)
   	returner = self.preferences["urlsuccess"]
-	returner = returner + "/success/#{order.id}";
+	returner = returner + "?idealid=#{order.id}&status=success";
 	return returner
   end
   
