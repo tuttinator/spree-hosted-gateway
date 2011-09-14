@@ -33,9 +33,9 @@
   # from admin => DB
   preference :merchantid, :string, :default => "002031546"
   preference :description, :string, :default => "Evans & Watson - Bestelling"
-  preference :urlsuccess, :string, :default => "http://evansnwatson.heroku.com"
-  preference :urlcancel, :string, :default => "http://evannwatson.heroku.com/cancel"
-  preference :urlerror, :string, :default => "http://evansnwatson.heroku.com/404"
+  preference :urlsuccess, :string, :default => "http://evansnwatson.heroku.com/"
+  preference :urlcancel, :string, :default => "http://evannwatson.heroku.com/"
+  preference :urlerror, :string, :default => "http://evansnwatson.heroku.com/"
   preference :secret, :string, :default => "cJqMwgU9XFatXvbR"
 
   #An array of preferences that should not be automatically inserted into the form
@@ -56,12 +56,14 @@
   def process_response(params)
     begin
       #Find order
-      order = Order.find_by_number(ExternalGateway.parse_custom_data(params)["id"])
+      #order = Order.find_by_number(ExternalGateway.parse_custom_data(params)["id"])
+      order = params[:ideal]
+      status = params[:status]
       raise ActiveRecord::RecordNotFound if order.token != ExternalGateway.parse_custom_data(params)["order_token"]
 
       #Check for successful response
       #transaction_succeeded = params[self.preferred_status_param_key.to_sym] == self.preferred_successful_transaction_value.to_s
-      transaction_succeeded = params["status"] == "success"
+      transaction_succeeded = status == "success"
       return [order, transaction_succeeded]
     rescue ActiveRecord::RecordNotFound
       #Return nil and false if we couldn't find the order - this is probably bad.
@@ -213,19 +215,19 @@
   
   def get_urlSuccess(order)
   	returner = self.preferences["urlsuccess"]
-	returner = returner + "/#{order.id}/";
+	returner = returner + "/ideal=#{order.id}&status=success";
 	return returner
   end
   
   def get_urlCancel(order)
    	returner = self.preferences["urlcancel"]
-   	returner = returner + "/#{order.id}/";
+   	returner = returner + "/ideal=#{order.id}&status=cancel";
 	return returner
   end
   
   def get_urlError(order)
    	returner = self.preferences["urlerror"]
-   	returner = returner + "/#{order.id}/";
+   	returner = returner + "ideal=#{order.id}&status=error";
 	return returner
   end
   
