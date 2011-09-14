@@ -57,13 +57,14 @@
     begin
       #Find order
       #order = Order.find_by_number(ExternalGateway.parse_custom_data(params)["id"])
-      order = params[:ideal]
+      order = Order.find_by_number(params["ideal"])
       status = params[:status]
-      raise ActiveRecord::RecordNotFound if order.token != ExternalGateway.parse_custom_data(params)["order_token"]
+      raise ActiveRecord::RecordNotFound if order.nil?
+      #raise ActiveRecord::RecordNotFound if order.token != ExternalGateway.parse_custom_data(params)["order_token"]
 
       #Check for successful response
       #transaction_succeeded = params[self.preferred_status_param_key.to_sym] == self.preferred_successful_transaction_value.to_s
-      transaction_succeeded = status == "success"
+      transaction_succeeded = params[:status] == "success"
       return [order, transaction_succeeded]
     rescue ActiveRecord::RecordNotFound
       #Return nil and false if we couldn't find the order - this is probably bad.
