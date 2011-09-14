@@ -33,7 +33,7 @@
   # from admin => DB
   preference :merchantid, :string, :default => "002031546"
   preference :description, :string, :default => "Evans & Watson - Bestelling"
-  preference :urlsuccess, :string, :default => "http://evansnwatson.heroku.com/"
+  preference :urlsuccess, :string, :default => "http://evansnwatson.heroku.com/success"
   preference :urlcancel, :string, :default => "http://evannwatson.heroku.com/"
   preference :urlerror, :string, :default => "http://evansnwatson.heroku.com/"
   preference :secret, :string, :default => "cJqMwgU9XFatXvbR"
@@ -56,9 +56,9 @@
   def process_response(params)
     begin
       #Find order
-      #order = Order.find_by_number(ExternalGateway.parse_custom_data(params)["id"])
-      order = Order.find_by_number(params["ideal"])
-      status = params[:status]
+      order = Order.find_by_number(ExternalGateway.parse_custom_data(params)["id"])
+      #order = Order.find_by_number(params["ideal_id"])
+      #status = params[:status]
       raise ActiveRecord::RecordNotFound if order.nil?
       #raise ActiveRecord::RecordNotFound if order.token != ExternalGateway.parse_custom_data(params)["order_token"]
 
@@ -216,7 +216,7 @@
   
   def get_urlSuccess(order)
   	returner = self.preferences["urlsuccess"]
-	returner = returner + "/ideal=#{order.id}&status=success";
+	returner = returner + "/#{order.id}";
 	return returner
   end
   
