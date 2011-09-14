@@ -57,7 +57,7 @@
     begin
       #Find order
       #order = Order.find_by_number(ExternalGateway.parse_custom_data(params)["id"])
-      order = Order.find_by_number(params["ideal_id"])
+      order = params[:idealid]
       #status = params[:status]
       raise ActiveRecord::RecordNotFound if order.nil?
       #raise ActiveRecord::RecordNotFound if order.token != ExternalGateway.parse_custom_data(params)["order_token"]
