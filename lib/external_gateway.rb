@@ -24,7 +24,7 @@
   
     # Rabobank iDEAL Lite - specific methods added by: Arjan Landman
   
-  #hardcoded
+  # could be hardcoded
   preference :language, :string, :default => 'nl'
   preference :subid, :string, :default => '0'
   preference :currency, :string, :default => 'EUR'
@@ -32,10 +32,10 @@
   
   # from admin => DB
   preference :merchantid, :string, :default => "002031546"
-  preference :description, :string, :default => "Evans & Watson - Bestelling"
-  preference :urlsuccess, :string, :default => "http://evansnwatson.heroku.com"
-  preference :urlcancel, :string, :default => "http://evannwatson.heroku.com/"
-  preference :urlerror, :string, :default => "http://evansnwatson.heroku.com/"
+  preference :description, :string, :default => "Evans&Watson"
+  preference :urlsuccess, :string, :default => "https://evansnwatson.heroku.com"
+  preference :urlcancel, :string, :default => "https://evannwatson.heroku.com/"
+  preference :urlerror, :string, :default => "https://evansnwatson.heroku.com/"
   preference :secret, :string, :default => "cJqMwgU9XFatXvbR"
 
   #An array of preferences that should not be automatically inserted into the form
