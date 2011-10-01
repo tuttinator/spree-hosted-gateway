@@ -216,7 +216,7 @@
   
   def get_urlSuccess(order)
   	returner = self.preferences["urlsuccess"]
-	returner = returner + "?idealid=#{order.id}&status=success";
+	returner = returner + "/checkout?idealid=#{order.id}&status=success";
 	return returner.to_s()
   end
   
