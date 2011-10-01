@@ -33,7 +33,7 @@
   # from admin => DB
   preference :merchantid, :string, :default => "002031546"
   preference :description, :string, :default => "Evans&Watson"
-  preference :urlsuccess, :string, :default => "https://evansnwatson.heroku.com"
+  preference :urlsuccess, :string, :default => "http://localhost:3000"
   preference :urlcancel, :string, :default => "https://evannwatson.heroku.com/"
   preference :urlerror, :string, :default => "https://evansnwatson.heroku.com/"
   preference :secret, :string, :default => "cJqMwgU9XFatXvbR"
@@ -217,7 +217,7 @@
   def get_urlSuccess(order)
   	returner = self.preferences["urlsuccess"]
 	returner = returner + "?idealid=#{order.id}&status=success";
-	return returner
+	return returner.to_s()
   end
   
   def get_urlCancel(order)
