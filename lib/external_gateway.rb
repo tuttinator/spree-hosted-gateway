@@ -216,7 +216,7 @@
   
   def get_urlSuccess(order)
   	returner = self.preferences["urlsuccess"]
-	returner = returner + "/#{order.id}/";
+	returner = returner + "/success/#{order.id}/";
 	return returner.to_s()
   end
   
