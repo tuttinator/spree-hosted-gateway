@@ -39,7 +39,7 @@
   preference :secret, :string, :default => "cJqMwgU9XFatXvbR"
 
   #An array of preferences that should not be automatically inserted into the form
-  INTERNAL_PREFERENCES = [:server, :status_param_key, :successful_transaction_value, :custom_data]
+  INTERNAL_PREFERENCES = [:server, :status_param_key, :successful_transaction_value, :custom_data, :urlSuccess]
 
   #Arbitrarily, this class is called ExternalGateway, but the extension is a whole is named 'HostedGateway', so
   #this is what we want our checkout/admin view partials to be named.
@@ -56,8 +56,8 @@
   def process_response(params)
     begin
       #Find order
-      #order = Order.find_by_number(ExternalGateway.parse_custom_data(params)["id"])
-      order = params[:idealid]
+      order = Order.find_by_number(ExternalGateway.parse_custom_data(params)["id"])
+      #order = params[:idealid]
       #status = params[:status]
       raise ActiveRecord::RecordNotFound if order.nil?
       #raise ActiveRecord::RecordNotFound if order.token != ExternalGateway.parse_custom_data(params)["order_token"]
@@ -216,7 +216,7 @@
   
   def get_urlSuccess(order)
   	returner = self.preferences["urlsuccess"]
-	returner = returner + "/checkout?idealid=#{order.id}&status=success";
+	returner = returner + "/#{order.id}/";
 	return returner.to_s()
   end
   
