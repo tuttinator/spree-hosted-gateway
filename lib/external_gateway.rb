@@ -214,13 +214,13 @@
   
   def get_urlSuccess(order)
   	returner = self.preferences["url_success"]
-	returner = returner + "/#{order.id}/";
+	returner = returner + "/success/#{order.id}";
 	return returner.to_s()
   end
   
   def get_urlCancel(order)
    	returner = self.preferences["url_cancel"]
-	returner = returner + "/#{order.id}/";
+	returner = returner + "/fail/#{order.id}";
 	return returner
   end
   
