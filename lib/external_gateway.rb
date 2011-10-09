@@ -33,8 +33,8 @@
   # from admin => DB
   preference :merchantid, :string, :default => "002031546"
   preference :description, :string, :default => "Evans&Watson"
-  preference :url_success, :string, :default => "http://evanswatson.heroku.com/"
-  preference :url_cancel, :string, :default => "http://evanswatson.heroku.com/cancel/"
+  preference :url_success, :string, :default => "http://evanswatson.heroku.com"
+  preference :url_cancel, :string, :default => "http://evanswatson.heroku.com/cancel"
   preference :url_error, :string, :default => "http://evansnwatson.heroku.com/404"
   preference :secret, :string, :default => "cJqMwgU9XFatXvbR"
 
