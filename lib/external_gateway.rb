@@ -33,9 +33,9 @@
   # from admin => DB
   preference :merchantid, :string, :default => "002031546"
   preference :description, :string, :default => "Evans&Watson"
-  preference :url_success, :string, :default => "http://evanswatson.heroku.com"
-  preference :url_cancel, :string, :default => "http://evanswatson.heroku.com/cancel"
-  preference :url_error, :string, :default => "http://evansnwatson.heroku.com/404"
+  preference :ideal_urlsuccess, :string, :default => "http://evanswatson.heroku.com"
+  preference :ideal_cancel, :string, :default => "http://evanswatson.heroku.com/cancel"
+  preference :ideal_url_error, :string, :default => "http://evansnwatson.heroku.com/404"
   preference :secret, :string, :default => "cJqMwgU9XFatXvbR"
 
   #An array of preferences that should not be automatically inserted into the form
@@ -213,19 +213,19 @@
   end
   
   def get_urlSuccess(order)
-  	returner = self.preferences["url_success"]
-	returner = returner + "/success/#{order.id}";
+  	returner = self.preferences["ideal_urlsuccess"]
+	returner = returner + "/checkout/gateway_landing/success/#{order.id}";
 	return returner.to_s()
   end
   
   def get_urlCancel(order)
-   	returner = self.preferences["url_cancel"]
+   	returner = self.preferences["ideal_urlcancel"]
 	returner = returner + "/fail/#{order.id}";
 	return returner
   end
   
   def get_urlError(order)
-   	returner = self.preferences["url_error"]
+   	returner = self.preferences["ideal_urlerror"]
 	returner = returner + "/#{order.id}/";
 	return returner
   end
