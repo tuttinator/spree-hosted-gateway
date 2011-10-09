@@ -9,22 +9,24 @@
       $('form[id=checkout_form_payment]').attr('action', '<%= escape_javascript(payment_method.get_server) %>');
       $('form').attr('method', 'post');
       $('form').attr('accept-charset', 'UTF-8');
+
       $('form').append("<%= escape_javascript(hidden_field_tag(:merchantID, payment_method.get_merchantID)) %>");
       $('form').append("<%= escape_javascript(hidden_field_tag(:subID, payment_method.get_subID)) %>");
       $('form').append("<%= escape_javascript(hidden_field_tag(:purchaseID, payment_method.get_purchaseID(@order))) %>");
       $('form').append("<%= escape_javascript(hidden_field_tag(:amount, payment_method.get_amount(@order))) %>");
       $('form').append("<%= escape_javascript(hidden_field_tag(:language, payment_method.get_language)) %>");
       $('form').append("<%= escape_javascript(hidden_field_tag(:currency, payment_method.get_currency)) %>");
-      $('form').append("<%= escape_javascript(hidden_field_tag(:description, payment_method.get_description)) %>");            
+      $('form').append("<%= escape_javascript(hidden_field_tag(:description, payment_method.get_description)) %>"); 
       $('form').append("<%= escape_javascript(hidden_field_tag(:paymentType, payment_method.get_paymentType)) %>");
-      $('form').append("<%= escape_javascript(hidden_field_tag(:urlSuccess, payment_method.get_urlSuccess(@order))) %>");      
-      $('form').append("<%= escape_javascript(hidden_field_tag(:urlCancel, payment_method.get_urlCancel(@order))) %>");
-      $('form').append("<%= escape_javascript(hidden_field_tag(:urlError, payment_method.get_urlError(@order))) %>");
+      $('form').append("<%= escape_javascript(hidden_field_tag(:urlSuccess, payment_method.get_urlSuccess(@order))) %>");
+      $('form').append("<%= escape_javascript(hidden_field_tag(:urlCancel, payment_method.get_urlCancel(@order))) %>");  
+      $('form').append("<%= escape_javascript(hidden_field_tag(:urlError, payment_method.get_urlError(@order))) %>");                                
       $('form').append("<%= escape_javascript(hidden_field_tag(:hash, payment_method.get_ideal(@order))) %>");
       
-      console.log("<%= payment_method.get_hash(@order) %>")
+	  console.log("<%= payment_method.get_ideal(@order) %>")
 
-      $('form').append("<%= escape_javascript(hidden_field_tag(:validUntil, payment_method.get_validUntil(@order))) %>");    
+      $('form').append("<%= escape_javascript(hidden_field_tag(:validUntil, payment_method.get_validUntil(@order))) %>"); 
+    
       <% payment_method.get_products(@order).each_with_index do |n,i| %>
         $('form').append("<%= escape_javascript(hidden_field_tag("itemNumber#{(i+1)}", n[:id])) %>");
         $('form').append("<%= escape_javascript(hidden_field_tag("itemDescription#{(i+1)}", n[:desc])) %>");
@@ -34,12 +36,13 @@
 	               
       
       <% payment_method.additional_attributes.each do |key, value| %>
-		console.log("<%= "#{key} #{value}" unless (key=="urlSuccess" || key=="urlCancel" || key=="urlError") %>")
-        $('form').append("<%= escape_javascript(hidden_field_tag(key.to_sym, value.to_s)) unless (key=="urlSuccess" || key=="urlCancel" || key=="urlError") %>");
+		console.log("<%= "#{key} #{value}" unless (key=="urlSuccess" || key=="urlCancel" || key=="urlError" || key=="purchaseID") %>")
+        $('form').append("<%= escape_javascript(hidden_field_tag(key.to_sym, value.to_s)) unless (key=="urlSuccess" || key=="urlCancel" || key=="urlError" || key=="purchaseID") %>");
       <% end -%>
+      
 
-      $('form input[type=submit], form button[type=submit]').removeAttr('disabled');
-    });
+          
+      $('form input[type=submit], form button[type=submit]').removeAttr('disabled'); });
   <% end -%>
 <% end -%>
 

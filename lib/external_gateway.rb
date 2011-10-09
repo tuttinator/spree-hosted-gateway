@@ -33,13 +33,13 @@
   # from admin => DB
   preference :merchantid, :string, :default => "002031546"
   preference :description, :string, :default => "Evans&Watson"
-  preference :urlsuccess, :string, :default => "http://localhost:3000"
-  preference :urlcancel, :string, :default => "https://evannwatson.heroku.com/"
-  preference :urlerror, :string, :default => "https://evansnwatson.heroku.com/"
+  preference :url_success, :string, :default => "https://evanswatson.heroku.com/"
+  preference :url_cancel, :string, :default => "https://evanswatson.heroku.com/cancel/"
+  preference :url_error, :string, :default => "https://evansnwatson.heroku.com/404"
   preference :secret, :string, :default => "cJqMwgU9XFatXvbR"
 
   #An array of preferences that should not be automatically inserted into the form
-  INTERNAL_PREFERENCES = [:server, :status_param_key, :successful_transaction_value, :custom_data, :urlSuccess]
+  INTERNAL_PREFERENCES = [:server, :status_param_key, :successful_transaction_value, :custom_data, :urlSuccess, :urlError, :urlCancel]
 
   #Arbitrarily, this class is called ExternalGateway, but the extension is a whole is named 'HostedGateway', so
   #this is what we want our checkout/admin view partials to be named.
@@ -56,15 +56,13 @@
   def process_response(params)
     begin
       #Find order
-      order = Order.find_by_number(ExternalGateway.parse_custom_data(params)["id"])
-      #order = params[:idealid]
-      #status = params[:status]
+	  order = Order.find_by_number(params["purchaseID"])
       raise ActiveRecord::RecordNotFound if order.nil?
       #raise ActiveRecord::RecordNotFound if order.token != ExternalGateway.parse_custom_data(params)["order_token"]
 
       #Check for successful response
       #transaction_succeeded = params[self.preferred_status_param_key.to_sym] == self.preferred_successful_transaction_value.to_s
-      transaction_succeeded = params[:status] == "success"
+      transaction_succeeded = params["status"] == "success"
       return [order, transaction_succeeded]
     rescue ActiveRecord::RecordNotFound
       #Return nil and false if we couldn't find the order - this is probably bad.
@@ -163,13 +161,13 @@
   def get_language
   	return self.preferences["language"]
   end
-  
+  # se
   def get_validUntil(order)
-  	t = Time.now + 2.hours
+  	t = Time.now + 1.hours
   	validuntil = t.strftime("%Y-%m-%dT%H:%M:%S.%Z") 
   	return validuntil
   end 
-  
+  # add BTW as a individual product to the order
   def add_btw(order)
   	order_btw = order.tax_total.to_f * 100
   	product = {
@@ -180,7 +178,7 @@
     }
     return product
   end
-  
+  # add shipping as a individual product to the order 
   def add_shipping(order)
 	ship_cost = order.ship_total.to_f * 100
     product = {
@@ -192,7 +190,7 @@
     return product
   end   	  
 
-  # get products in array
+  # get all products in array and add BTW and shipping costs
     def get_products(order)
 	products = Array.new();
 	
@@ -215,24 +213,24 @@
   end
   
   def get_urlSuccess(order)
-  	returner = self.preferences["urlsuccess"]
-	returner = returner + "/success/#{order.id}/";
+  	returner = self.preferences["url_success"]
+	returner = returner + "/#{order.id}/";
 	return returner.to_s()
   end
   
   def get_urlCancel(order)
-   	returner = self.preferences["urlcancel"]
-   	returner = returner + "/ideal=#{order.id}&status=cancel";
+   	returner = self.preferences["url_cancel"]
+	returner = returner + "/#{order.id}/";
 	return returner
   end
   
   def get_urlError(order)
-   	returner = self.preferences["urlerror"]
-   	returner = returner + "ideal=#{order.id}&status=error";
+   	returner = self.preferences["url_error"]
+	returner = returner + "/#{order.id}/";
 	return returner
   end
   
-  # hash order
+  # hash order for Rabobank iDEAL Lite
   def get_hash(order)
   	hashprimer = ""
   	hashprimer = hashprimer + self.preferences["secret"]
@@ -264,4 +262,3 @@
   end
   
 end
-
