@@ -33,7 +33,7 @@
   # from admin => DB
   preference :merchantid, :string, :default => "002031546"
   preference :description, :string, :default => "Evans&Watson"
-  preference :ideal_urlsuccess, :string, :default => "http://evansnwatson.heroku.com"
+  preference :ideal_urlsuccess, :string, :default => "http://evansnwatson.heroku.com/checkout/gateway_landing"
   preference :ideal_urlcancel, :string, :default => "http://evansnwatson.heroku.com/cancel"
   preference :ideal_urlerror, :string, :default => "http://evansnwatson.heroku.com/404"
   preference :secret, :string, :default => "cJqMwgU9XFatXvbR"
@@ -62,7 +62,7 @@
 
       #Check for successful response
       #transaction_succeeded = params[self.preferred_status_param_key.to_sym] == self.preferred_successful_transaction_value.to_s
-      transaction_succeeded = params["status"] == "success"
+      transaction_succeeded = params[self.preferred_status_param_key.to_sym] == self.preferred_successful_transaction_value.to_s
       return [order, transaction_succeeded]
     rescue ActiveRecord::RecordNotFound
       #Return nil and false if we couldn't find the order - this is probably bad.
