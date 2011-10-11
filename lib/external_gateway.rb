@@ -212,10 +212,12 @@
  	return self.preferences["payment_type"]
   end
   
-  def get_urlSuccess(order)
-  	returner = self.preferences["ideal_urlsuccess"]
-	returner = returner + "/checkout/gateway_landing/success/#{order.id}";
-	return returner.to_s()
+  def get_urlSuccess(order, on_admin_page = false)
+    if on_admin_page
+      return admin_gateway_landing_url(:host => Spree::Config[:site_url])
+    else
+      return gateway_landing_url(:host => Spree::Config[:site_url])
+    end
   end
   
   def get_urlCancel(order)
