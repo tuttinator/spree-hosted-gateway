@@ -3,18 +3,18 @@ module HostedGateway
     def self.included(base)
       base.class_eval do
 		
-		require 'net/http'
-		http.use_ssl = true
-		http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+		#require 'net/http'
+		#http.use_ssl = true
+		#http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 				
-		Net::HTTP.start('evansnwatson.heroku.com') do |http|
-			response = http.get('/checkout/gateway_landing', 'Accept' => 'text/xml')
+		#Net::HTTP.start('evansnwatson.heroku.com') do |http|
+		#	response = http.get('/checkout/gateway_landing', 'Accept' => 'text/xml')
 			
 			# RESPOND TO XML FROM RABOBANK
 			
-		end	
+		#end	
 		
-		respond_to :xml, :json
+		#respond_to :xml, :json
 		
         skip_before_filter :load_order, :only => [:process_gateway_return]
         #We need to skip this security check Rails does in order to let the payment gateway do a postback.
