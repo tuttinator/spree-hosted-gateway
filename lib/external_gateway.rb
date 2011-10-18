@@ -35,7 +35,7 @@
   # from admin => DB
   preference :merchantid, :string, :default => "002031546"
   preference :description, :string, :default => "Evans&Watson"
-  preference :ideal_urlsuccess, :string, :default => "http://evansnwatson.heroku.com/checkout/gateway_landing"
+  preference :ideal_urlsuccess, :string, :default => "http://localhost:3000/checkout/gateway_landing"
   preference :ideal_urlcancel, :string, :default => "http://evansnwatson.heroku.com/cancel"
   preference :ideal_urlerror, :string, :default => "http://evansnwatson.heroku.com/404"
   preference :secret, :string, :default => "cJqMwgU9XFatXvbR"
@@ -64,7 +64,7 @@
 
       #Check for successful response
       #transaction_succeeded = params[self.preferred_status_param_key.to_sym] == self.preferred_successful_transaction_value.to_s
-      transaction_succeeded = params[self.preferred_status_param_key.to_sym] == self.preferred_successful_transaction_value.to_s
+      transaction_succeeded = params["status"] == "success"
       return [order, transaction_succeeded]
     rescue ActiveRecord::RecordNotFound
       #Return nil and false if we couldn't find the order - this is probably bad.
@@ -214,7 +214,7 @@
  	return self.preferences["payment_type"]
   end
   
-  def get_urlSuccess(order, on_admin_page = false)
+  def get_return_url_for(order, on_admin_page = false)
     if on_admin_page
       return admin_gateway_landing_url(:host => Spree::Config[:site_url])
     else
@@ -222,6 +222,12 @@
     end
   end
   
+  def get_urlSuccess(order)
+   	returner = self.preferences["ideal_success"]
+	returner = returner + "/success/#{order.id}";
+	return returner
+  end
+
   def get_urlCancel(order)
    	returner = self.preferences["ideal_urlcancel"]
 	returner = returner + "/fail/#{order.id}";
