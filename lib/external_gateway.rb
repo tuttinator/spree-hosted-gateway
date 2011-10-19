@@ -198,7 +198,7 @@
 	products = Array.new();
 	
 		order.products.each_with_index do |product, i|
-			product_price = order.current_item.price.to_f * 100			
+			product_price = order.line_item.price.to_f * 100			
 			products[i] = {
 				:id => product.id,
 				:desc => product.name, 
