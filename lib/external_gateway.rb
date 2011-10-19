@@ -1,5 +1,5 @@
  class ExternalGateway < PaymentMethod
-  include Rails.application.routes.url_helpers.checkout_path
+  include Rails.application.routes.url_helpers
 
   require 'digest/sha1'
   require 'date'
