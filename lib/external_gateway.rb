@@ -1,4 +1,5 @@
  class ExternalGateway < PaymentMethod
+  include Rails.application.routes.url_helpers.checkout_path
 
   require 'digest/sha1'
   require 'date'
@@ -8,7 +9,7 @@
   # RAILS 2
   #include ActionController::UrlWriter
   # Changed for Rails 3  
-  include Rails.application.routes.url_helpers
+
   #This is normally set in the Admin UI - the server in this case is where to redirect to.
   preference :server, :string
 
@@ -197,7 +198,7 @@
 	products = Array.new();
 	
 		order.products.each_with_index do |product, i|
-			product_price = product.price.to_f * 100			
+			product_price = order.line_items.price.to_f * 100			
 			products[i] = {
 				:id => product.id,
 				:desc => product.name, 
