@@ -14,7 +14,7 @@ module HostedGateway
           gateway = PaymentMethod.find_by_id_and_type(ExternalGateway.parse_custom_data(params)["payment_method_id"], "ExternalGateway")
           
           #@order, payment_made = gateway.process_response(params)
-		  @order, payment_made = completed
+		  @order, payment_made = return true
 
           if @order && payment_made
             #Payment successfully processed
