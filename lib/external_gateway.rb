@@ -36,7 +36,7 @@
   # from admin => DB
   preference :merchantid, :string, :default => "002031546"
   preference :description, :string, :default => "Evans&Watson"
-  preference :ideal_urlsuccess, :string, :default => "http://localhost:3000/checkout/gateway_landing"
+  preference :ideal_urlsuccess, :string, :default => "http://evansnwatson.heroku.com"
   preference :ideal_urlcancel, :string, :default => "http://evansnwatson.heroku.com/cancel"
   preference :ideal_urlerror, :string, :default => "http://evansnwatson.heroku.com/404"
   preference :secret, :string, :default => "cJqMwgU9XFatXvbR"
@@ -49,6 +49,13 @@
   def method_type
     "hosted_gateway"
   end
+  
+	#	BASE_URL = "http://evansnwatson.heroku.com"
+		
+	#def ideal_callback	
+	#	ideal_callback = BASE_URL + '/ideal_callback.xml'
+	#end
+  
 
   #Process response detects the status of a payment made through an external gateway by looking
   #for a success value (as configured in the successful_transaction_value preference), in a particular
@@ -58,14 +65,17 @@
   #along with the transaction status.
   def process_response(params)
     begin
+	  
+	 # idealresponse = Nokogiri.XML(open( BASE_URL + "checkout/payment/ideal_callback").read)
+
       #Find order
 	  order = Order.find_by_number(params["purchaseID"])
       raise ActiveRecord::RecordNotFound if order.nil?
       #raise ActiveRecord::RecordNotFound if order.token != ExternalGateway.parse_custom_data(params)["order_token"]
 
       #Check for successful response
-      #transaction_succeeded = params[self.preferred_status_param_key.to_sym] == self.preferred_successful_transaction_value.to_s
-      transaction_succeeded = params["status"] == "success"
+      transaction_succeeded = true
+      #transaction_succeeded = params["status"] == "success"
       return [order, transaction_succeeded]
     rescue ActiveRecord::RecordNotFound
       #Return nil and false if we couldn't find the order - this is probably bad.
@@ -86,7 +96,7 @@
   #At a minimum, you should use this field to POST the order number and payment method id - but you can
   #always override it to do something else.
   def get_custom_data_for(order)
-    return {"order_number" => order.number, "payment_method_id" => self.id, "order_token" => order.token}.to_json
+    return {"purchaseID" => order.number, "payment_method_id" => self.id, "order_token" => order.token}.to_json
   end
 
   #This is another case of stupid payment gateways, but does allow you to
@@ -224,9 +234,7 @@
   end
   
   def get_urlSuccess(order)
-   	returner = self.preferences["ideal_urlsuccess"]
-	returner = returner + "/success/#{order.id}";
-	return returner
+      return gateway_landing_url(:host => Spree::Config[:site_url])
   end
 
   def get_urlCancel(order)
