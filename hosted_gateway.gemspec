@@ -17,4 +17,5 @@ Gem::Specification.new do |s|
 
 
   s.add_dependency('spree_core', '>= 0.30.1')
+  s.add_dependency('htmlentities', '> 0')
 end
